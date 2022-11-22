@@ -1,20 +1,27 @@
 package proyectofinalpoo;
 
-import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ProyectofinalPoo {
 
     static int select = -1;
+    static LinkedList<Subsidio> ListaSubsidio = new LinkedList();
 
     public static void main(String[] args) {
+
+        CargarListaSubsidios();
+
         while (select != 5) {
 
             try {
                 String Lectura = JOptionPane.showInputDialog(
                         null,
-                         "Seleccione un opción:"
+                        "Seleccione un opción:"
                         + "\n1. Registrar Subsidio"
                         + "\n2. Consultar Ciudadanos"
                         + "\n3. Consultar Subsidiados"
@@ -38,7 +45,7 @@ public class ProyectofinalPoo {
 
                     case 3:
 
-                        JOptionPane.showMessageDialog(null, BuscarSubsidiados());
+                        JOptionPane.showMessageDialog(null, ConsultarSubsidiados());
                         break;
 
                     case 4:
@@ -77,10 +84,23 @@ public class ProyectofinalPoo {
             Municipio = JOptionPane.showInputDialog("Introduzca Municipio");
             Departamento = JOptionPane.showInputDialog("Introduzca Departamento");
             Subsidio = JOptionPane.showInputDialog("Introduzca Subsidio");
+
             String Result = ConexionMySQL.validarSubsidiado(IdentificacionSubsidiado);
+
             if (!"no existe".equals(Result)) {
                 return Result;
-            } 
+            }
+
+            Result = ConexionMySQL.insertarpersona(IdentificacionSubsidiado, NombreSubsidiado);
+            if (!"Ok".equals(Result)) {
+                return Result;
+            }
+
+            Result = ConexionMySQL.insertarsubsidio(IdentificacionSubsidiado, Municipio, Departamento, Subsidio);
+            if (!"Ok".equals(Result)) {
+                return Result;
+            }
+
             return "Subsidio del ciudadano registrado, y termino aca";
 
         } catch (Exception e) {
@@ -90,27 +110,30 @@ public class ProyectofinalPoo {
     }
 
     public static String ConsultarCiudadanos() {
- 
- try {
+
+        try {
             ConexionMySQL.abrirConexion();
             //System.out.println("Se conectó a la base de datos");
             LinkedList<Ciudadano> res = ConexionMySQL.listarCiudadano();
-            ConexionMySQL.imprimirCiudadano(res);
             
+
             ConexionMySQL.cerrarConexion();
+            imprimirCiudadano(res);
+            
             //System.out.println("Se desconectó de la base de datos");
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
             System.out.println("Excepción:" + e);
         }
         return "";
-    } 
+    }
 
        public static String ConsultarSubsidiados() {    
  try {
             ConexionMySQL.abrirConexion();
             //System.out.println("Se conectó a la base de datos");
             LinkedList<Subsidiado> res = ConexionMySQL.listarSubsidiado();
-            ConexionMySQL.imprimirCiudadano(res);
+            
+           // MODIFICAR O ARREGLAR imprimirCiudadano(res);
             
             ConexionMySQL.cerrarConexion();
             //System.out.println("Se desconectó de la base de datos");
@@ -137,6 +160,28 @@ public class ProyectofinalPoo {
     }
     
     
+    
+
+    public static void CargarListaSubsidios() {
+
+        try {
+            ListaSubsidio = ConexionMySQL.listarSubsidio();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProyectofinalPoo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
-    
+    public static void imprimirCiudadano(LinkedList<Ciudadano> lst) {
+        StringBuilder salida = new StringBuilder();
+        Iterator it = lst.iterator();
+        while (it.hasNext()) {
+            Ciudadano c = (Ciudadano) it.next();
+            String res = "Identificacion: " + c.getIdentificacion()
+                    + "Nombre: " + c.getNombre()
+                    + "\n";
+            salida.append(res);
+        }
+        System.out.println(salida);
+    }
+}
