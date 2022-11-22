@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-//import javax.swing.JOptionPane;
 
 public class ConexionMySQL {
 
@@ -68,7 +66,8 @@ public class ConexionMySQL {
 
         return lst;
     }
-   public static LinkedList<Subsidio> listarSubsidio() throws SQLException {
+
+    public static LinkedList<Subsidio> listarSubsidio() throws SQLException {
         ResultSet rs;         // Para obtener los datos de la BD
         String consulta;
         LinkedList<Subsidio> lst = new LinkedList();
@@ -78,26 +77,24 @@ public class ConexionMySQL {
 
         try {
             abrirConexion();
-                 // Se envia la consulta a la BD
-        rs = st.executeQuery(consulta);
+            // Se envia la consulta a la BD
+            rs = st.executeQuery(consulta);
 
-        // Ahora se obtiene la información de la BD
-        while (rs.next()) {
-            int Id = rs.getInt("Id");
-            String SubsidioNombre = rs.getString("SubsidioNombre");
+            // Ahora se obtiene la información de la BD
+            while (rs.next()) {
+                int Id = rs.getInt("Id");
+                String SubsidioNombre = rs.getString("SubsidioNombre");
 
-            Subsidio p = new Subsidio(Id,SubsidioNombre );
-            lst.add(p); // Se agrega el objeto a la lista de estudiantes
-        }
+                Subsidio p = new Subsidio(Id, SubsidioNombre);
+                lst.add(p); // Se agrega el objeto a la lista de estudiantes
+            }
 
-        // Se cierra el ResultSet
-        rs.close();
-            
-            
+            // Se cierra el ResultSet
+            rs.close();
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(ConexionMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
-
 
         return lst;
     }
@@ -129,6 +126,42 @@ public class ConexionMySQL {
         }
     }
 
+    public static LinkedList<Ciudadano> listarCiudadano() throws SQLException {
+        ResultSet rs;
+        String consulta;
+        LinkedList<Ciudadano> lst = new LinkedList();
+
+        consulta = "SELECT * FROM ciudadano;";
+
+        // Se envia la consulta a la BD
+        rs = st.executeQuery(consulta);
+        while (rs.next()) {
+            int identificacion = rs.getInt("Identificacion");
+            String nombre = rs.getString("Nombre");
+            Ciudadano c = new Ciudadano(identificacion, nombre);
+            lst.add(c); // Se agrega el objeto a la lista de estudiantes
+        }
+        rs.close();
+        return lst;
+    }
+
+
+
+    /* 
+            StringBuilder salida = new StringBuilder();
+        Iterator it = lst.iterator();
+        while (it.hasNext()) {
+
+       Ciudadano c = new Ciudadano();
+            boolean res = it.hasNext();
+            JOptionPane.showMessageDialog(null, "Identificacion: "+c.getIdentificacion()+"Nombre: "+ c.getNombre());
+            salida.append(res);
+        }
+        System.out.println(salida);
+    
+    
+    
+     */
     public static void imprimirLista(LinkedList<Subsidiado> lst) {
         StringBuilder salida = new StringBuilder();
         Iterator it = lst.iterator();
@@ -168,7 +201,7 @@ public class ConexionMySQL {
         try {
             abrirConexion();
             String insertsubsidio = "INSERT INTO SUBSIDIO VALUES "
-                    + "("+ Identificacion + "','" + Municipio + "', '" + Departamento + "','" + Subsidio + "');";
+                    + "(" + Identificacion + "','" + Municipio + "', '" + Departamento + "','" + Subsidio + "');";
             st.executeUpdate(insertsubsidio);
 
             cerrarConexion();
