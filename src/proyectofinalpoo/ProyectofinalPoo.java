@@ -1,13 +1,23 @@
 package proyectofinalpoo;
 
-import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ProyectofinalPoo {
 
-    static int select = -1;
 
+    static int select = -1;
+    static LinkedList<Subsidio> ListaSubsidio = new LinkedList();
+
+ 
+    
     public static void main(String[] args) {
+        
+        CargarListaSubsidios();
+        
         while (select != 5) {
 
             try {
@@ -76,10 +86,23 @@ public class ProyectofinalPoo {
             Municipio = JOptionPane.showInputDialog("Introduzca Municipio");
             Departamento = JOptionPane.showInputDialog("Introduzca Departamento");
             Subsidio = JOptionPane.showInputDialog("Introduzca Subsidio");
+            
             String Result = ConexionMySQL.validarSubsidiado(IdentificacionSubsidiado);
+            
             if (!"no existe".equals(Result)) {
                 return Result;
             }
+            
+            Result = ConexionMySQL.insertarpersona(IdentificacionSubsidiado, NombreSubsidiado);
+            if (!"Ok".equals(Result)) {
+                return Result;
+            }
+            
+            Result = ConexionMySQL.insertarsubsidio(IdentificacionSubsidiado, Municipio, Departamento, Subsidio);
+            if (!"Ok".equals(Result)) {
+                return Result;
+            }
+            
             return "Subsidio del ciudadano registrado, y termino aca";
 
         } catch (Exception e) {
@@ -98,5 +121,15 @@ public class ProyectofinalPoo {
 
     public static String BuscarSubsidiados() {
         return "Subsidio Registrado";
+    }
+    
+    public static void CargarListaSubsidios(){
+            
+        try {
+            ListaSubsidio = ConexionMySQL.listarSubsidio();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProyectofinalPoo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
