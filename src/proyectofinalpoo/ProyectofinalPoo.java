@@ -80,7 +80,7 @@ public class ProyectofinalPoo {
             String Result = ConexionMySQL.validarSubsidiado(IdentificacionSubsidiado);
             if (!"no existe".equals(Result)) {
                 return Result;
-            }
+            } 
             return "Subsidio del ciudadano registrado, y termino aca";
 
         } catch (Exception e) {
