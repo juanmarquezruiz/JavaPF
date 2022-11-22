@@ -3,6 +3,8 @@ package proyectofinalpoo;
 import java.sql.*;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 //import javax.swing.JOptionPane;
 
@@ -18,7 +20,7 @@ public class ConexionMySQL {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     // El url de la BD, se especifica el nombre del host y el de la base de datos
-    private static final String URL = "jdbc:mysql://localhost:3306/proyectofinal";
+    private static final String URL = "jdbc:mysql://localhost:3306/subsidios2022";
 
     // Abrir la conexión con la BD
     public static void abrirConexion() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
@@ -66,17 +68,31 @@ public class ConexionMySQL {
     }
 
     public static String validarSubsidiado(int IdentificacionSubsidiado) {
-     
+  
         try {
-            //consultar si existe
+            
+              abrirConexion() ;
+            
             ResultSet rs;
-            String Query_Validacion = "Select top 1 identificacion from ciudadano where identificacion = " + IdentificacionSubsidiado + ";";
+            
+            String Query_Validacion = "Select identificacion from ciudadano where identificacion = " + IdentificacionSubsidiado + ";";
+            
             rs = st.executeQuery(Query_Validacion);
-            if (rs.wasNull()) {
-                return JOptionPane.showInputDialog("el subsidiado fue registrado, paso por aca");
-            }else {return "Si existe";}
-        }catch(SQLException EX) {
-        return "Error, ocurrio un problema en la BD";
+            
+            if (rs.next() == false) {
+                return "no existe";
+            }
+            else
+            {
+                return "Si existe";
+            }
+        }catch( SQLException e) {
+            
+            return "Error, ocurrio un problema en la BD";
+              
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(ConexionMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            return ex.getMessage();
         }
     }
     
