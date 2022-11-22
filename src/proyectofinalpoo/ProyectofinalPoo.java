@@ -38,7 +38,7 @@ public class ProyectofinalPoo {
 
                     case 3:
 
-                        JOptionPane.showMessageDialog(null, ConsultarSubsidiados());
+                        JOptionPane.showMessageDialog(null, BuscarSubsidiados());
                         break;
 
                     case 4:
@@ -105,11 +105,38 @@ public class ProyectofinalPoo {
         return "";
     } 
 
-    public static String ConsultarSubsidiados() {
-        return "Subsidio Registrado";
+       public static String ConsultarSubsidiados() {    
+ try {
+            ConexionMySQL.abrirConexion();
+            //System.out.println("Se conectó a la base de datos");
+            LinkedList<Subsidiado> res = ConexionMySQL.listarSubsidiado();
+            ConexionMySQL.imprimirCiudadano(res);
+            
+            ConexionMySQL.cerrarConexion();
+            //System.out.println("Se desconectó de la base de datos");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+            System.out.println("Excepción:" + e);
+        }
+        return "";
+    } 
+    
+ 
+    public static String BuscarSubsidiados() {    
+ try {
+            ConexionMySQL.abrirConexion();
+            //System.out.println("Se conectó a la base de datos");
+            LinkedList<Subsidiado> res = ConexionMySQL.listarSubsidiado();
+            ConexionMySQL.buscarSubsidio(res);
+            
+            ConexionMySQL.cerrarConexion();
+            //System.out.println("Se desconectó de la base de datos");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+            System.out.println("Excepción:" + e);
+        }
+        return "";
+    }
+    
+    
     }
 
-    public static String BuscarSubsidiados() {
-        return "Subsidio Registrado";
-    }
-}
+    

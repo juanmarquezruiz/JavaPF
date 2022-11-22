@@ -168,5 +168,13 @@ public class ConexionMySQL {
         // Se envia la consulta a la BD
         st.executeUpdate(consulta);
     }
+       public static void buscarSubsidio(LinkedList<Subsidiado> identificacion) throws SQLException {
+        // Se arma la consulta
+        LinkedList<Subsidiado>identificacion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la identificacion del subsidiado que va  buscar"));
+        String consulta = "Select "+identificacion+ "from subsidiados";
+        //System.out.println(consulta);
 
+        // Se envia la consulta a la BD
+        st.executeUpdate(consulta);
+    }
 }
