@@ -23,7 +23,7 @@ public class ConexionMySQL {
     private static final String URL = "jdbc:mysql://localhost:3306/subsidios2022";
 
     // Abrir la conexión con la BD
-    public static void abrirConexion() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    public static void abrirConexion() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         // Se realiza la conexión
         Class.forName(DRIVER);
         con = DriverManager.getConnection(URL, "root", "");
@@ -68,34 +68,79 @@ public class ConexionMySQL {
     }
 
     public static String validarSubsidiado(int IdentificacionSubsidiado) {
-  
+
         try {
-            
-              abrirConexion() ;
-            
+
+            abrirConexion();
+
             ResultSet rs;
-            
+
             String Query_Validacion = "Select identificacion from ciudadano where identificacion = " + IdentificacionSubsidiado + ";";
-            
+
             rs = st.executeQuery(Query_Validacion);
-            
+
             if (rs.next() == false) {
                 return "no existe";
-            }
-            else
-            {
+            } else {
                 return "Si existe";
             }
-        }catch( SQLException e) {
-            
+        } catch (SQLException e) {
+
             return "Error, ocurrio un problema en la BD";
-              
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(ConexionMySQL.class.getName()).log(Level.SEVERE, null, ex);
             return ex.getMessage();
         }
     }
+
     
+       public static LinkedList<Ciudadano> listarCiudadano() throws SQLException {
+        ResultSet rs;
+        String consulta;
+        LinkedList<Ciudadano>lst = new LinkedList();
+  
+        consulta = "SELECT * FROM CIUDADANO;";
+        
+        // Se envia la consulta a la BD
+        rs = st.executeQuery(consulta);
+        while (rs.next()) {
+            int identificacion= rs.getInt("identificacion");
+            String nombre = rs.getString("Nombre");
+            Ciudadano c = new Ciudadano (identificacion, nombre);
+            lst.add(c); // Se agrega el objeto a la lista de estudiantes
+        }
+        rs.close();
+        return lst;   
+    }
+    public static void imprimirCiudadano(LinkedList<Ciudadano> lst) {
+        StringBuilder salida = new StringBuilder();
+        Iterator it = lst.iterator();
+        while (it.hasNext()) {
+            Ciudadano c = (Ciudadano) it.next();
+            String res = "Identificacion: " + c.getIdentificacion()
+                    + "Nombre: " + c.getNombre()
+                    + "\n";
+            salida.append(res);
+        }
+        System.out.println(salida);
+    } 
+    
+     /* 
+            StringBuilder salida = new StringBuilder();
+        Iterator it = lst.iterator();
+        while (it.hasNext()) {
+
+       Ciudadano c = new Ciudadano();
+            boolean res = it.hasNext();
+            JOptionPane.showMessageDialog(null, "Identificacion: "+c.getIdentificacion()+"Nombre: "+ c.getNombre());
+            salida.append(res);
+        }
+        System.out.println(salida);
+    
+    
+    
+    */
 
     public static void imprimirLista(LinkedList<Subsidiado> lst) {
         StringBuilder salida = new StringBuilder();

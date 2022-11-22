@@ -2,6 +2,7 @@ package proyectofinalpoo;
 
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class ProyectofinalPoo {
 
@@ -89,8 +90,20 @@ public class ProyectofinalPoo {
     }
 
     public static String ConsultarCiudadanos() {
-        return "Subsidio Registrado";
-    }
+ 
+ try {
+            ConexionMySQL.abrirConexion();
+            //System.out.println("Se conectó a la base de datos");
+            LinkedList<Ciudadano> res = ConexionMySQL.listarCiudadano();
+            ConexionMySQL.imprimirCiudadano(res);
+            
+            ConexionMySQL.cerrarConexion();
+            //System.out.println("Se desconectó de la base de datos");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+            System.out.println("Excepción:" + e);
+        }
+        return "";
+    } 
 
     public static String ConsultarSubsidiados() {
         return "Subsidio Registrado";
