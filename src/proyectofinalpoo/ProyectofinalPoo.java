@@ -128,19 +128,19 @@ public class ProyectofinalPoo {
     }
 
        public static String ConsultarSubsidiados() {    
- try {
-            ConexionMySQL.abrirConexion();
+        try {
+           
             //System.out.println("Se conectó a la base de datos");
-            LinkedList<Subsidiado> res = ConexionMySQL.listarSubsidiado();
+            LinkedList<Subsidiado> ResultadoSubsidiados = ConexionMySQL.listarSubsidiado();
             
-           // MODIFICAR O ARREGLAR imprimirCiudadano(res);
-            
-            ConexionMySQL.cerrarConexion();
-            //System.out.println("Se desconectó de la base de datos");
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
-            System.out.println("Excepción:" + e);
+            return listarSubsidiado(ResultadoSubsidiados);
+           
+        } catch (SQLException e) {
+           
+            return "Excepción:" + e.getMessage();
+        
         }
-        return "";
+     
     } 
     
  
@@ -176,12 +176,31 @@ public class ProyectofinalPoo {
         StringBuilder salida = new StringBuilder();
         Iterator it = lst.iterator();
         while (it.hasNext()) {
-            Ciudadano c = (Ciudadano) it.next();
-            String res = "Identificacion: " + c.getIdentificacion()
-                    + "Nombre: " + c.getNombre()
+            
+            Ciudadano ObjCiudadano = (Ciudadano) it.next();
+            String res = "Identificacion: " + ObjCiudadano.getIdentificacion()
+                    + "Nombre: " + ObjCiudadano.getNombre()
                     + "\n";
             salida.append(res);
         }
         System.out.println(salida);
+    }
+    
+    
+    
+     public static String listarSubsidiado(LinkedList<Subsidiado> lst) {
+        String ToString =  "";
+         
+        Iterator it = lst.iterator();
+        
+        while (it.hasNext()) {
+            
+            Subsidiado ObjSubsidiado = (Subsidiado) it.next();
+            ToString += ObjSubsidiado.getNo() + " Nombre: " + ObjSubsidiado.getNombre() + " Identificacion: " + ObjSubsidiado.getIdentificacion() 
+                    + " Departamento: " + ObjSubsidiado.getDepartamento() + " Municipio: " + ObjSubsidiado.getMunicipio() 
+                    + " Subsidio:" + ObjSubsidiado.getSubsidio() + "\n";
+            
+        }
+       return ToString;
     }
 }

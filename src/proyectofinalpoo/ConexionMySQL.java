@@ -38,31 +38,43 @@ public class ConexionMySQL {
     }
 
     public static LinkedList<Subsidiado> listarSubsidiado() throws SQLException {
-        ResultSet rs;         // Para obtener los datos de la BD
-        String consulta;
-        LinkedList<Subsidiado> lst = new LinkedList();
+            ResultSet rs;         // Para obtener los datos de la BD
+            String consulta;
+            LinkedList<Subsidiado> lst = new LinkedList();
+            
+        try {
+            
+            abrirConexion();
+      
 
-        // Se arma la consulta
-        consulta = "SELECT * FROM subsidiado;";
+            // Se arma la consulta
+            consulta = "SELECT s.*, c.nombre FROM subsidiado s inner join ciudadano c on c.identificacion = s.identificacion;";
 
-        // Se envia la consulta a la BD
-        rs = st.executeQuery(consulta);
+            // Se envia la consulta a la BD
+            rs = st.executeQuery(consulta);
 
-        // Ahora se obtiene la información de la BD
-        while (rs.next()) {
-            int no = rs.getInt("NO");
-            int identificacion = rs.getInt("Identificacion");
-            String Municipio = rs.getString("Municipio");
-            String Departamento = rs.getString("Departamento");
-            String Subsidio = rs.getString("Subsidio");
+            // Ahora se obtiene la información de la BD
+            while (rs.next()) {
+                int no = rs.getInt("NO");
+                int identificacion = rs.getInt("Identificacion");
+                String Municipio = rs.getString("Municipio");
+                String Departamento = rs.getString("Departamento");
+                String Subsidio = rs.getString("Subsidio");
+                String Nombre = rs.getString("Nombre"); 
+               
 
-            Subsidiado p = new Subsidiado(no, identificacion, Municipio, Departamento, Subsidio);
-            lst.add(p); // Se agrega el objeto a la lista de estudiantes
+                Subsidiado p = new Subsidiado(no, identificacion, Municipio, Departamento, Subsidio, Nombre);
+                lst.add(p); // Se agrega el objeto a la lista de estudiantes
+            }
+
+            // Se cierra el ResultSet
+            rs.close();
+            cerrarConexion();
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(ConexionMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-
-        // Se cierra el ResultSet
-        rs.close();
-        cerrarConexion();
 
         return lst;
     }
@@ -145,8 +157,6 @@ public class ConexionMySQL {
         return lst;
     }
 
-
-
     /* 
             StringBuilder salida = new StringBuilder();
         Iterator it = lst.iterator();
@@ -212,9 +222,9 @@ public class ConexionMySQL {
             return "Error, " + ex.getMessage();
         }
     }
-    
+
     //esto no debe estar en esta clase 
-       public static void buscarSubsidio(LinkedList<Subsidiado> identificacion) throws SQLException {
+    public static void buscarSubsidio(LinkedList<Subsidiado> identificacion) throws SQLException {
         // Se arma la consulta
         //LinkedList<Subsidiado> identificacion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la identificacion del subsidiado que va  buscar"));
         //String consulta = "Select identificacion from subsidiados;";
