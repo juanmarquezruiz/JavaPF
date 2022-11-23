@@ -146,6 +146,7 @@ public class ProyectofinalPoo {
  
     public static String BuscarSubsidiados() {    
  try {
+     
             ConexionMySQL.abrirConexion();
             //System.out.println("Se conectó a la base de datos");
             LinkedList<Subsidiado> res = ConexionMySQL.listarSubsidiado();
@@ -159,7 +160,14 @@ public class ProyectofinalPoo {
         return "";
     }
     
-    
+    public static void CargarListaCiudadanos(){
+      try {
+          LinkedList<Ciudadano> ListaCiudadano = ConexionMySQL.listarCiudadano();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProyectofinalPoo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     
 
     public static void CargarListaSubsidios() {
