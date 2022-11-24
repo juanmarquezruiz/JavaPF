@@ -5,16 +5,26 @@ public class Subsidiado {
  private String Municipio; 
  private String Departamento; 
  private String Subsidio;
+ private String Nombre;
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
 
     public Subsidiado() {
     }
 
-    public Subsidiado(int no, int identificacion, String Municipio, String Departamento, String Subsidio) {
+    public Subsidiado(int no, int identificacion, String Municipio, String Departamento, String Subsidio, String Nombre) {
         this.no = no;
         this.identificacion = identificacion;
         this.Municipio = Municipio;
         this.Departamento = Departamento;
         this.Subsidio = Subsidio;
+        this.Nombre = Nombre;
     }
 
     public String getSubsidio() {
@@ -56,5 +66,5 @@ public class Subsidiado {
     public void setDepartamento(String Departamento) {
         this.Departamento = Departamento;
     }
-
+    
 }
