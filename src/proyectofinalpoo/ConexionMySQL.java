@@ -109,7 +109,7 @@ public class ConexionMySQL {
             if (rs.next() == false) {
                 return "no existe";
             } else {
-                return "Si existe";
+                return "El numero de documento que intenta usar ya existe. Por favor digite otro";
             }
         } catch (SQLException e) {
             return "Error, ocurrio un problema en la BD";
