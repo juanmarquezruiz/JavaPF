@@ -8,7 +8,8 @@ public class ConexionMySQL {
     private static Connection con = null;
     private static Statement st = null;
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://u3izbkwgfact1l0c:1DwgeE2VixHUgIuVAY8O@bt5vtvpi1cmv4s5i4co8-mysql.services.clever-cloud.com:3306/bt5vtvpi1cmv4s5i4co8";
+    //private static final String URL = "jdbc:mysql://u3izbkwgfact1l0c:1DwgeE2VixHUgIuVAY8O@bt5vtvpi1cmv4s5i4co8-mysql.services.clever-cloud.com:3306/bt5vtvpi1cmv4s5i4co8";
+    private static final String URL = "jdbc:mysql://54.39.75.7:3306/bt5vtvpi1cmv4s5i4co8";
 
     public static void abrirConexion() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         Class.forName(DRIVER);
